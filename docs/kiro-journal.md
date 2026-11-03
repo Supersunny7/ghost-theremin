@@ -41,3 +41,19 @@
 | `eslint` `typescript-eslint` `@eslint/js` `globals` | dev | Linting per tech spec |
 | `eslint-plugin-react-hooks` `eslint-plugin-react-refresh` | dev | React-specific lint rules |
 | `@types/react` `@types/react-dom` | dev | TypeScript types for React |
+
+### 2026-11-03: Latency spike — webcam + MediaPipe + Tone.js
+
+- **Kiro feature used:** vibe
+- **Model:** Auto
+- **What I asked:** Minimal PoC to measure end-to-end latency: mirrored video, HandLandmarker VIDEO mode, Tone.js sine oscillator mapped to hand x/y, debug overlay.
+- **What Kiro did well:** Built the full hot-path pipeline in a single component (`LatencySpike.tsx`) with `performance.mark`/`measure` instrumentation, correct rAF/rVFC loop, ramp-based audio to avoid clicks, and tracking-lost fade following the latency budget rules.
+- **What I had to correct:** Nothing yet.
+- **Bug or insight caught by PBT / hooks:** N/A — spike only.
+
+#### Dependencies added in this session
+
+| Package | Type | Reason |
+|---|---|---|
+| `@mediapipe/tasks-vision` | prod | HandLandmarker for hand tracking per tech spec |
+| `tone` | prod | Audio synthesis (sine oscillator, gain, limiter) per tech spec |

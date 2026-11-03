@@ -1,11 +1,9 @@
-// Root application shell. Feature components will be mounted here.
+// Root application shell.
+// During the latency spike this mounts LatencySpike directly.
+// It will be replaced with the full UI once the engine/audio/vision layers
+// are built.
+import { LatencySpike } from "./LatencySpike.tsx";
+
 export function App() {
-  return (
-    <main>
-      <h1>👻 Ghost Theremin</h1>
-      {/* aria-live region for screen-reader state announcements (WCAG 4.1.3) */}
-      <div aria-live="polite" aria-atomic="true" className="sr-only" id="status-announcer" />
-      <p>Scaffold placeholder — features coming soon.</p>
-    </main>
-  );
+  return <LatencySpike />;
 }
