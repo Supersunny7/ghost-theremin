@@ -41,3 +41,11 @@
 | `eslint` `typescript-eslint` `@eslint/js` `globals` | dev | Linting per tech spec |
 | `eslint-plugin-react-hooks` `eslint-plugin-react-refresh` | dev | React-specific lint rules |
 | `@types/react` `@types/react-dom` | dev | TypeScript types for React |
+### 2026-11-03: Latency spike + first hook
+- **Kiro feature used:** vibe coding (spike), agent hook (Stop)
+- **Model:** Auto
+- **What I asked:** a throwaway latency proof of concept (webcam → MediaPipe → Tone.js)
+- **What Kiro did well:** working hand tracking on the first try; vision 8 ms, processing 0.14 ms
+- **What I had to correct:** the generated code had a nested-quote syntax error that broke the dev server.
+  I added a "Stop check" hook so Kiro runs typecheck, lint and tests before finishing and fixes failures itself.
+- **Insight:** camera FPS (20) is the real latency bottleneck, not our code.
