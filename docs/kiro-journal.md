@@ -41,6 +41,7 @@
 | `eslint` `typescript-eslint` `@eslint/js` `globals` | dev | Linting per tech spec |
 | `eslint-plugin-react-hooks` `eslint-plugin-react-refresh` | dev | React-specific lint rules |
 | `@types/react` `@types/react-dom` | dev | TypeScript types for React |
+<<<<<<< HEAD
 
 ### 2026-11-03: Latency spike — webcam + MediaPipe + Tone.js
 
@@ -57,3 +58,13 @@
 |---|---|---|
 | `@mediapipe/tasks-vision` | prod | HandLandmarker for hand tracking per tech spec |
 | `tone` | prod | Audio synthesis (sine oscillator, gain, limiter) per tech spec |
+=======
+### 2026-11-03: Latency spike + first hook
+- **Kiro feature used:** vibe coding (spike), agent hook (Stop)
+- **Model:** Auto
+- **What I asked:** a throwaway latency proof of concept (webcam → MediaPipe → Tone.js)
+- **What Kiro did well:** working hand tracking on the first try; vision 8 ms, processing 0.14 ms
+- **What I had to correct:** the generated code had a nested-quote syntax error that broke the dev server.
+  I added a "Stop check" hook so Kiro runs typecheck, lint and tests before finishing and fixes failures itself.
+- **Insight:** camera FPS (20) is the real latency bottleneck, not our code.
+>>>>>>> main

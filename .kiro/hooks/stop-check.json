@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Stop check",
+      "trigger": "Stop",
+      "description": "Runs typecheck, lint, and tests when the agent stops. Fixes any failures before completing.",
+      "action": {
+        "type": "agent",
+        "prompt": "Before finishing, run `npm run typecheck`, then `npm run lint`, then `npm run test`.\n\nIf any of them fail, fix the problems and run them again.\n\nIf all pass, reply 'All checks passed' and stop without making further changes."
+      }
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+// PURE MODULE — no DOM, no Tone.js, no MediaPipe imports; must stay testable in Node/Vitest with zero browser globals.
 // Engine layer: pure TypeScript only.
 // No DOM, no Tone.js, no MediaPipe imports are allowed here — this module
 // must remain importable in a Node/Vitest environment with no browser globals,
