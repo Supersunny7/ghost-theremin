@@ -14,6 +14,21 @@ Turn normalized hand landmarks into stable, in-scale, click-free sound with unde
 
 Out of scope for this spec: LLM summon, accompaniment, MIDI out, recording, head tracking, final haunted visuals.
 
+## Lessons from the latency spike (branch `spike/latency`, 2026-11-03)
+Measured on a Windows laptop webcam in Chrome:
+- Camera delivers 30 FPS at 640×480 (in a dark room it dropped to ~20 FPS because of auto-exposure).
+- MediaPipe vision: ~7.8 ms per frame. Our processing: ~0.15 ms. Audio output latency: ~10 ms.
+- **Detection ran at only 20 FPS while the camera delivered 30**, so one in three frames was dropped.
+  Likely cause: per-frame React state updates (pitch/volume text) re-rendering the component.
+- Estimated latency ~68 ms excluding camera capture; felt acceptable when playing.
+
+Requirements that follow from this:
+- Detection FPS must equal camera FPS. Drive the loop with `requestVideoFrameCallback`.
+- **No React state updates in the per-frame loop.** Keep live values in refs or a plain store; update on-screen readouts at most ~10 times per second.
+- Request `frameRate: { ideal: 60, min: 30 }` at 640×480, and show the actual camera FPS in the debug overlay.
+- If camera FPS drops below 24, show a gentle "The spirits need more light" hint.
+- The control point is the palm center (average of wrist and the MCP joints), which is steadier than a fingertip.
+
 ## User stories
 1. As a player, when I move my right hand left or right, the pitch changes smoothly across about two octaves of the current scale.
 2. As a player, when I raise or lower my right hand, the volume rises or falls without clicks or sudden jumps.
@@ -27,7 +42,8 @@ Out of scope for this spec: LLM summon, accompaniment, MIDI out, recording, head
 - WHILE the hand stays within a hysteresis band around a note boundary, THE engine SHALL keep the current note.
 - IF no hand is detected for more than 150 ms, THEN THE engine SHALL ramp gain to 0 within 200 ms.
 - IF any input coordinate is NaN, undefined, or outside `[0, 1]`, THEN THE engine SHALL treat it as tracking lost and SHALL NOT throw.
-- THE debug overlay SHALL display per-frame processing time and estimated end-to-end latency.
+- THE debug overlay SHALL display camera FPS, detection FPS, per-frame processing time, and estimated end-to-end latency.
+- WHILE the camera delivers N frames per second, THE system SHALL run detection on all N frames (no dropped frames due to our own code).
 
 ## Correctness properties (to be tested with fast-check)
 Please enable property-based testing for these and keep the generators broad.
